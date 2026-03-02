@@ -2,8 +2,7 @@
 
 namespace KKSoftware\IndexedSearchGC\Service;
 
-
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\Logger;
@@ -98,9 +97,9 @@ class GarbageCollectorService
     }
 
     /**
-     * @param int $phash
+     * @param int|string $phash
      */
-    protected function deleteData(int $phash)
+    protected function deleteData(int|string $phash)
     {
         $counter = 0;
 
@@ -108,7 +107,7 @@ class GarbageCollectorService
 
         foreach ($this->statements as $statement) {
             $statement->bindValue(1, $phash);
-            $result = $statement->execute();
+            $result = $statement->executeQuery();
 
             $counter += $result->rowCount();
         }
